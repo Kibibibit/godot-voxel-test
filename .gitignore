@@ -4,3 +4,5 @@
 addons/kibi-voxel/.vscode
 addons/kibi-voxel/bin
 *.os
+
+addons/kibi-voxel/.sconsign.dblite

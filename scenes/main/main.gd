@@ -12,7 +12,7 @@ func _ready():
 	
 
 func do_fast_mesh():
-	var start: int = Time.get_ticks_usec()
+	
 	
 	var mesh := VoxelMesh.new()
 	
@@ -30,6 +30,8 @@ func do_fast_mesh():
 			for z in 16:
 				var cell = 1 if noise.get_noise_3d(x,y,z) > 0.0 else 0
 				data[16*16*y + 16*z + x] = cell
+	
+	var start: int = Time.get_ticks_usec()
 	
 	mesh.remesh(16, data)
 	
