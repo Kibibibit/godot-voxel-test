@@ -1,0 +1,4 @@
+[submodule "addons/kibi-voxel/godot-cpp"]
+	path = addons/kibi-voxel/godot-cpp
+	url = https://github.com/godotengine/godot-cpp
+	branch = 4.1

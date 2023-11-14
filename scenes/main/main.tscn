@@ -16,3 +16,5 @@ transform = Transform3D(0.818701, 0.4655, -0.336211, 0, 0.58551, 0.810665, 0.574
 script = ExtResource("2_ulci3")
 
 [node name="CameraTarget" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]

@@ -1,13 +1,43 @@
 extends Node3D
 
 
-
+@onready var mi: MeshInstance3D = $MeshInstance3D
 
 func _ready():
 	$Camera3D.look_at($CameraTarget.position)
 	
-	do_mesh()
 	
+	do_fast_mesh()
+	
+	#do_mesh()
+
+func do_fast_mesh():
+	var start: int = Time.get_ticks_usec()
+	
+	var mesh := VoxelMesh.new()
+	
+	var noise := FastNoiseLite.new()
+	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
+	noise.seed = Time.get_ticks_usec()
+	noise.fractal_octaves = 1
+	noise.frequency = 0.1
+	
+	var data := PackedByteArray()
+	data.resize(16*16*16)
+	
+	for x in 16:
+		for y in 16:
+			for z in 16:
+				var cell = 1 if noise.get_noise_3d(x,y,z) > 0.0 else 0
+				data[16*16*y + 16*z + x] = cell
+	
+	mesh.remesh(16, data)
+	
+	var end: int = Time.get_ticks_usec()
+	
+	mi.mesh = mesh
+	
+	print("Fast Mesh Time: ", float(end-start)/1000, "ms")
 
 func do_mesh():
 	
@@ -20,6 +50,7 @@ func do_mesh():
 	noise.fractal_octaves = 1
 	noise.frequency = 0.1
 	
+	var mesh := VoxelMesh.new()
 	
 	var output: Array[Array] = []
 	
@@ -54,4 +85,4 @@ func _input(event):
 		else:
 			vp.debug_draw = Viewport.DEBUG_DRAW_WIREFRAME
 	if event is InputEventKey and Input.is_key_pressed(KEY_SPACE):
-		do_mesh()
+		do_fast_mesh()
