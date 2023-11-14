@@ -6,10 +6,10 @@ extends Node3D
 func _ready():
 	$Camera3D.look_at($CameraTarget.position)
 	
-	
+	do_mesh()
 	do_fast_mesh()
 	
-	#do_mesh()
+	
 
 func do_fast_mesh():
 	var start: int = Time.get_ticks_usec()
@@ -18,7 +18,7 @@ func do_fast_mesh():
 	
 	var noise := FastNoiseLite.new()
 	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
-	noise.seed = Time.get_ticks_usec()
+	noise.seed = 0
 	noise.fractal_octaves = 1
 	noise.frequency = 0.1
 	
@@ -46,11 +46,9 @@ func do_mesh():
 	
 	var noise := FastNoiseLite.new()
 	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
-	noise.seed = Time.get_ticks_usec()
+	noise.seed = 0
 	noise.fractal_octaves = 1
 	noise.frequency = 0.1
-	
-	var mesh := VoxelMesh.new()
 	
 	var output: Array[Array] = []
 	
