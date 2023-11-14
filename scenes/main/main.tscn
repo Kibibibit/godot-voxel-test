@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://3aw3b5vvqy3p"]
+
+[ext_resource type="Script" path="res://scenes/main/main.gd" id="1_gg3wg"]
+[ext_resource type="Script" path="res://scripts/voxel_mesh_instance.gd" id="2_ulci3"]
+
+[node name="Root" type="Node3D"]
+script = ExtResource("1_gg3wg")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.994228, -0.0318315, 0.102457, 0, 0.954973, 0.296692, -0.107288, -0.29498, 0.949461, 8.33197, 23.8324, 38.4883)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.818701, 0.4655, -0.336211, 0, 0.58551, 0.810665, 0.57422, -0.663693, 0.479358, 0, 11.7206, 17.22)
+
+[node name="VoxelMeshInstance" type="MeshInstance3D" parent="."]
+script = ExtResource("2_ulci3")
+
+[node name="CameraTarget" type="Node3D" parent="."]
