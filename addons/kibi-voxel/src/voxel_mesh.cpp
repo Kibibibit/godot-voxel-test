@@ -205,6 +205,8 @@ void VoxelMesh::remesh(int p_chunk_size, const PackedByteArray &data)
 
                                 Vector3 normal = face_normal(side);
 
+                                int type = mask[n]->type;                                
+
                                 verts.append(Vector3(x[0], x[1], x[2]));
                                 verts.append(Vector3(x[0] + du[0], x[1] + du[1], x[2] + du[2]));
                                 verts.append(Vector3(x[0] + du[0] + dv[0], x[1] + du[1] + dv[1], x[2] + du[2] + dv[2]));
@@ -213,10 +215,10 @@ void VoxelMesh::remesh(int p_chunk_size, const PackedByteArray &data)
                                 normals.append(normal);
                                 normals.append(normal);
                                 normals.append(normal);
-                                uvs.append(Vector2(0, 0));
-                                uvs.append(Vector2(0, 0));
-                                uvs.append(Vector2(0, 0));
-                                uvs.append(Vector2(0, 0));
+                                uvs.append(Vector2(type+0.2, 0.2));
+                                uvs.append(Vector2(type+0.8, 0.2));
+                                uvs.append(Vector2(type+0.2, 0.8));
+                                uvs.append(Vector2(type+0.8, 0.8));
                                 if (back_face)
                                 {
                                     indices.append(index_offset + 1);

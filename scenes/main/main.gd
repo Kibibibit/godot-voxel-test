@@ -1,81 +1,26 @@
 extends Node3D
 
-
-@onready var mi: MeshInstance3D = $MeshInstance3D
+var world_size: int = 5
 
 func _ready():
-	$Camera3D.look_at($CameraTarget.position)
-	
-	do_mesh()
-	do_fast_mesh()
-	
-	
+	var dim_count = world_size*2 + 1
+	var total = dim_count*dim_count*dim_count
+	var i = 0
+	$CameraTarget/Camera3D.look_at($CameraTarget.position)
+	for x in range(-world_size,world_size+1):
+		for y in range(-world_size,world_size+1):
+			for z in range(-world_size,world_size+1):
+				#var start: int = Time.get_ticks_usec()
+				add_child(Chunk.new(16, Vector3i(x,y,z)))
+				#var end: int = Time.get_ticks_usec()
+				#print(float(end-start)/1000.0,"ms")
+				i += 1
+				
+		print(i,"/",total)
 
-func do_fast_mesh():
-	
-	
-	var mesh := VoxelMesh.new()
-	
-	var noise := FastNoiseLite.new()
-	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
-	noise.seed = 0
-	noise.fractal_octaves = 1
-	noise.frequency = 0.1
-	
-	var data := PackedByteArray()
-	data.resize(16*16*16)
-	
-	for x in 16:
-		for y in 16:
-			for z in 16:
-				var cell = 1 if noise.get_noise_3d(x,y,z) > 0.0 else 0
-				data[16*16*y + 16*z + x] = cell
-	
-	var start: int = Time.get_ticks_usec()
-	
-	mesh.remesh(16, data)
-	
-	var end: int = Time.get_ticks_usec()
-	
-	mi.mesh = mesh
-	
-	print("Fast Mesh Time: ", float(end-start)/1000, "ms")
 
-func do_mesh():
-	
-	var start: int = Time.get_ticks_usec()
-	
-	
-	var noise := FastNoiseLite.new()
-	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
-	noise.seed = 0
-	noise.fractal_octaves = 1
-	noise.frequency = 0.1
-	
-	var output: Array[Array] = []
-	
-	for y in VoxelMeshInstance.CHUNK_SIZE:
-		var slice_y: Array[Array] = []
-		for z in VoxelMeshInstance.CHUNK_SIZE:
-			var slice_z: Array[int] = []
-			for x in VoxelMeshInstance.CHUNK_SIZE:
-				var cell = 1 if noise.get_noise_3d(x,y,z) > 0.0 else 0
-				slice_z.append(cell)
-			slice_y.append(slice_z)
-		output.append(slice_y)
-		
-	
-	var end: int = Time.get_ticks_usec()
-	
-	print("Generate Time: ", float(end-start)/1000, "ms")
-	
-	$VoxelMeshInstance.data = output
-	start = Time.get_ticks_usec()
-	$VoxelMeshInstance.greedy()
-	end = Time.get_ticks_usec()
-	
-	print("Mesh Time: ", float(end-start)/1000, "ms")
-
+func _process(delta):
+	$CameraTarget.rotation.y += delta*0.5
 
 func _input(event):
 	if event is InputEventKey and Input.is_key_pressed(KEY_P):
@@ -84,5 +29,4 @@ func _input(event):
 			vp.debug_draw = Viewport.DEBUG_DRAW_DISABLED
 		else:
 			vp.debug_draw = Viewport.DEBUG_DRAW_WIREFRAME
-	if event is InputEventKey and Input.is_key_pressed(KEY_SPACE):
-		do_fast_mesh()
+
