@@ -1,14 +1,15 @@
 extends Node3D
 
-var world_size: int = 2
+var world_size: int = 5
+var world_height: int = 8
 
 func _ready():
 	var dim_count = world_size*2 + 1
-	var total = dim_count*dim_count*dim_count
+	var total = dim_count*dim_count*world_height
 	var i = 0
 	$CameraTarget/Camera3D.look_at($CameraTarget.position)
 	for x in range(-world_size,world_size+1):
-		for y in range(-world_size,world_size+1):
+		for y in world_height:
 			for z in range(-world_size,world_size+1):
 				#var start: int = Time.get_ticks_usec()
 				add_child(Chunk.new(16, Vector3i(x,y,z)))
@@ -20,7 +21,7 @@ func _ready():
 
 
 func _process(delta):
-	$CameraTarget.rotation.y += delta*0.0
+	$CameraTarget.rotation.y += delta*0.1
 
 func _input(event):
 	if event is InputEventKey and Input.is_key_pressed(KEY_P):

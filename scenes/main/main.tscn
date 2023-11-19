@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://3aw3b5vvqy3p"]
+[gd_scene load_steps=3 format=3 uid="uid://3aw3b5vvqy3p"]
 
 [ext_resource type="Script" path="res://scenes/main/main.gd" id="1_gg3wg"]
+[ext_resource type="Script" path="res://scenes/main/world_gen_display.gd" id="2_edbep"]
 
 [node name="Root" type="Node3D"]
 script = ExtResource("1_gg3wg")
@@ -11,4 +12,20 @@ transform = Transform3D(0.818701, 0.4655, -0.336211, 0, 0.58551, 0.810665, 0.574
 [node name="CameraTarget" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="CameraTarget"]
-transform = Transform3D(0.994228, -0.0318315, 0.102457, 0, 0.954973, 0.296693, -0.107288, -0.29498, 0.949461, 22.239, 61.7659, 77.1819)
+transform = Transform3D(0.994228, -0.0318315, 0.102457, 0, 0.954973, 0.296693, -0.107288, -0.29498, 0.949461, 22.239, 133.45, 77.182)
+
+[node name="Control" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 200.0
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_edbep")

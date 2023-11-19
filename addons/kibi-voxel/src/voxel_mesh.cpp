@@ -218,11 +218,11 @@ void VoxelMesh::remesh(int p_chunk_size, const PackedByteArray &data, int p_mate
                                 float uv_offset_x, uv_offset_y = 0.0;
 
                                 if (dimension == DIMENSION_SOUTH_NORTH) {
-                                    uv_offset_x = face_size_vector.x;
-                                    uv_offset_y = face_size_vector.y;
-                                } else if (dimension == DIMENSION_WEST_EAST) {
                                     uv_offset_x = face_size_vector.y;
-                                    uv_offset_y = face_size_vector.z;
+                                    uv_offset_y = face_size_vector.x;
+                                } else if (dimension == DIMENSION_WEST_EAST) {
+                                    uv_offset_x = face_size_vector.z;
+                                    uv_offset_y = face_size_vector.y;
                                 } else {
                                     uv_offset_x = face_size_vector.x;
                                     uv_offset_y = face_size_vector.z;
