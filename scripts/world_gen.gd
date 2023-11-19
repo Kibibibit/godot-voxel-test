@@ -19,7 +19,7 @@ func get_block(index: Vector3i) -> int:
 	
 	var block: int = 1 if noise.get_noise_3dv(index) > -0.5 else 0
 	
-	if (index.y+4 < height && index.y >= height):
+	if (index.y < height+2 && index.y >= height):
 		return 2
 	elif (index.y < height):
 		return block

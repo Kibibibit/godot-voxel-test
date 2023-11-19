@@ -1,6 +1,6 @@
 extends Node3D
 
-var world_size: int = 5
+var world_size: int = 2
 
 func _ready():
 	var dim_count = world_size*2 + 1
@@ -20,7 +20,7 @@ func _ready():
 
 
 func _process(delta):
-	$CameraTarget.rotation.y += delta*0.5
+	$CameraTarget.rotation.y += delta*0.0
 
 func _input(event):
 	if event is InputEventKey and Input.is_key_pressed(KEY_P):

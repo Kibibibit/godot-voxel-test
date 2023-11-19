@@ -67,9 +67,10 @@ Vector3 VoxelMesh::face_normal(side_t side)
     }
 }
 
-void VoxelMesh::remesh(int p_chunk_size, const PackedByteArray &data)
+void VoxelMesh::remesh(int p_chunk_size, const PackedByteArray &data, int p_material_count)
 {
     this->chunk_size = p_chunk_size;
+    this->material_count = p_material_count;
 
     Array surface_array = Array();
     surface_array.resize(Mesh::ARRAY_MAX);
@@ -78,6 +79,7 @@ void VoxelMesh::remesh(int p_chunk_size, const PackedByteArray &data)
     PackedVector2Array uvs = PackedVector2Array();
     PackedVector3Array normals = PackedVector3Array();
     PackedInt32Array indices = PackedInt32Array();
+    PackedFloat32Array custom0 = PackedFloat32Array();
 
     face_t *mask[this->chunk_size * this->chunk_size];
 
@@ -205,20 +207,50 @@ void VoxelMesh::remesh(int p_chunk_size, const PackedByteArray &data)
 
                                 Vector3 normal = face_normal(side);
 
-                                int type = mask[n]->type;                                
+                                int type = mask[n]->type;
 
-                                verts.append(Vector3(x[0], x[1], x[2]));
-                                verts.append(Vector3(x[0] + du[0], x[1] + du[1], x[2] + du[2]));
-                                verts.append(Vector3(x[0] + du[0] + dv[0], x[1] + du[1] + dv[1], x[2] + du[2] + dv[2]));
-                                verts.append(Vector3(x[0] + dv[0], x[1] + dv[1], x[2] + dv[2]));
+                                Vector3 v1 = Vector3(x[0], x[1], x[2]);
+                                Vector3 v2 = Vector3(x[0] + du[0], x[1] + du[1], x[2] + du[2]);
+                                Vector3 v3 = Vector3(x[0] + du[0] + dv[0], x[1] + du[1] + dv[1], x[2] + du[2] + dv[2]);
+                                Vector3 v4 = Vector3(x[0] + dv[0], x[1] + dv[1], x[2] + dv[2]);
+
+                                Vector3 face_size_vector = v3-v1;
+                                float uv_offset_x, uv_offset_y = 0.0;
+
+                                if (dimension == DIMENSION_SOUTH_NORTH) {
+                                    uv_offset_x = face_size_vector.x;
+                                    uv_offset_y = face_size_vector.y;
+                                } else if (dimension == DIMENSION_WEST_EAST) {
+                                    uv_offset_x = face_size_vector.y;
+                                    uv_offset_y = face_size_vector.z;
+                                } else {
+                                    uv_offset_x = face_size_vector.x;
+                                    uv_offset_y = face_size_vector.z;
+                                }
+
+
+                                verts.append(v1);
+                                verts.append(v2);
+                                verts.append(v3);
+                                verts.append(v4);
+
+                               
+                                
                                 normals.append(normal);
                                 normals.append(normal);
                                 normals.append(normal);
                                 normals.append(normal);
-                                uvs.append(Vector2(type+0.2, 0.2));
-                                uvs.append(Vector2(type+0.8, 0.2));
-                                uvs.append(Vector2(type+0.2, 0.8));
-                                uvs.append(Vector2(type+0.8, 0.8));
+                                uvs.append(Vector2(0.0, 0.0));
+                                uvs.append(Vector2(0.0, uv_offset_y));
+                                uvs.append(Vector2(uv_offset_x, uv_offset_y));
+                                uvs.append(Vector2(uv_offset_x, 0.0));
+
+                                float custom_value = ((float)type -1.0) / (float)material_count;
+
+                                custom0.append(custom_value);
+                                custom0.append(custom_value);
+                                custom0.append(custom_value);
+                                custom0.append(custom_value);
                                 if (back_face)
                                 {
                                     indices.append(index_offset + 1);
@@ -262,15 +294,15 @@ void VoxelMesh::remesh(int p_chunk_size, const PackedByteArray &data)
         back_face = false;
         iters -= 1;
     }
-
     surface_array[Mesh::ARRAY_VERTEX] = verts;
     surface_array[Mesh::ARRAY_TEX_UV] = uvs;
     surface_array[Mesh::ARRAY_NORMAL] = normals;
     surface_array[Mesh::ARRAY_INDEX] = indices;
+    surface_array[Mesh::ARRAY_CUSTOM0] = custom0;
 
     this->clear_surfaces();
     if (verts.size() > 0)
     {
-        this->add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, surface_array);
+        this->add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, surface_array, Array(), Dictionary(), Mesh::ARRAY_CUSTOM_R_FLOAT << Mesh::ARRAY_FORMAT_CUSTOM0_SHIFT);
     }
 }

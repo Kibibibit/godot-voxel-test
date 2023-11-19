@@ -32,11 +32,13 @@ namespace godot
         GDCLASS(VoxelMesh, ArrayMesh)
 
     private:
+        int material_count;
         int chunk_size;
         int get_voxel_index(int x, int y, int z);
         bool face_equals(face_t * face_a, face_t * face_b);
         face_t * get_face(int x, int y, int z, const PackedByteArray &data, side_t side);
         Vector3 face_normal(side_t side);
+        void add_face(float x1, float y1, float x2, float y2, face_t * face);
 
     protected:
         static void _bind_methods();
@@ -46,7 +48,7 @@ namespace godot
         ~VoxelMesh();
 
         int get_chunk_size();
-        void remesh(int p_chunk_size, const PackedByteArray &data);
+        void remesh(int p_chunk_size, const PackedByteArray &data, int p_material_count);
     };
 
 }
