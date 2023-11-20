@@ -40,7 +40,6 @@ namespace godot
         bool face_equals(face_t * face_a, face_t * face_b);
         face_t * get_face(int x, int y, int z, const PackedByteArray &data, side_t side);
         Vector3 face_normal(side_t side);
-        void add_face(float x1, float y1, float x2, float y2, face_t * face);
 
     protected:
         static void _bind_methods();
