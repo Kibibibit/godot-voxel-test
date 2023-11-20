@@ -249,8 +249,6 @@ void VoxelMesh::remesh(int p_chunk_size, const PackedByteArray &data, int p_mate
                                 verts.append(v3);
                                 verts.append(v4);
 
-                               
-                                
                                 normals.append(normal);
                                 normals.append(normal);
                                 normals.append(normal);
