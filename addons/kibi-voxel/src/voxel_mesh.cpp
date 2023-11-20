@@ -208,6 +208,11 @@ void VoxelMesh::remesh(int p_chunk_size, const PackedByteArray &data, int p_mate
                                 Vector3 normal = face_normal(side);
 
                                 int type = mask[n]->type;
+                                float y_offset = 0.0;
+                                if (type == WATER_SURFACE) {
+                                    y_offset = 0.25;
+                                }
+
 
                                 Vector3 v1 = Vector3(x[0], x[1], x[2]);
                                 Vector3 v2 = Vector3(x[0] + du[0], x[1] + du[1], x[2] + du[2]);
@@ -220,12 +225,22 @@ void VoxelMesh::remesh(int p_chunk_size, const PackedByteArray &data, int p_mate
                                 if (dimension == DIMENSION_SOUTH_NORTH) {
                                     uv_offset_x = face_size_vector.y;
                                     uv_offset_y = face_size_vector.x;
+                                    v3.y -= y_offset;
+                                    v4.y -= y_offset;
                                 } else if (dimension == DIMENSION_WEST_EAST) {
                                     uv_offset_x = face_size_vector.z;
                                     uv_offset_y = face_size_vector.y;
+                                    v2.y -= y_offset;
+                                    v3.y -= y_offset;
                                 } else {
                                     uv_offset_x = face_size_vector.x;
                                     uv_offset_y = face_size_vector.z;
+                                    if (side == SIDE_TOP) {
+                                        v1.y -= y_offset;
+                                        v2.y -= y_offset;
+                                        v3.y -= y_offset;
+                                        v4.y -= y_offset;
+                                    }
                                 }
 
 

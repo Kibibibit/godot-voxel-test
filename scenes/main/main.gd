@@ -1,6 +1,6 @@
 extends Node3D
 
-var world_size: int = 5
+var world_size: int = 2
 var world_height: int = 8
 
 func _ready():

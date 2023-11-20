@@ -14,6 +14,8 @@
 #define DIMENSION_BOTTOM_TOP 1
 #define DIMENSION_SOUTH_NORTH 2
 
+#define WATER_SURFACE 6
+
 typedef int side_t;
 
 namespace godot

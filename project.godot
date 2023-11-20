@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+RNG="*res://scripts/rng.gd"
 WorldGen="*res://scripts/world_gen.gd"
 
 [editor_plugins]

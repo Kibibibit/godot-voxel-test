@@ -21,7 +21,7 @@ func _ready():
 			for z in chunk_size:
 				voxel_data[y*chunk_size*chunk_size + z*chunk_size + x] = WorldGen.get_block((chunk_index*chunk_size) + Vector3i(x,y,z))
 	
-	mesh.remesh(chunk_size, voxel_data, 2)
+	mesh.remesh(chunk_size, voxel_data, 6)
 	if (mesh.get_surface_count() > 0):
 		mesh.surface_set_material(0, WorldGen.block_material)
 	position = chunk_index*chunk_size
